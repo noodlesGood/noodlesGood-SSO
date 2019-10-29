@@ -6,3 +6,10 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/oauth2db?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&autoReconnect=true&serverTimezone=UTC
     username: root
     password: root
+#  redis配置
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 5000
