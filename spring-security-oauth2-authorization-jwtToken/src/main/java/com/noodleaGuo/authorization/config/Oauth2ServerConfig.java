@@ -9,10 +9,15 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 /**
  * oauth2授权服务配置类
@@ -42,7 +47,13 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(jdbcTokenStore());
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(
+                jwtAccessTokenConverter(),jwtTokenEnhancer()
+        ));
+        endpoints.tokenStore(tokenStore())
+                .tokenEnhancer(tokenEnhancerChain);
+        //.accessTokenConverter(jwtAccessTokenConverter());
     }
 
     /**
@@ -54,12 +65,33 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
         return new JdbcClientDetailsService(dataSource);
     }
 
+
     /**
-     * 声明 JdbcTokenStore 的实现
-     * @return JdbcTokenStore
+     *
+     * 1.令牌生成器 对称加密
+     * @return JwtAccessTokenConverter
      */
     @Bean
-    public TokenStore jdbcTokenStore(){
-        return new JdbcTokenStore(dataSource);
+    public JwtAccessTokenConverter jwtAccessTokenConverter(){
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setSigningKey("secret");
+        return jwtAccessTokenConverter;
+    }
+
+    /**
+     * token 实现
+     * @return TokenStore
+     */
+    @Bean
+    public TokenStore tokenStore(){
+        return new JwtTokenStore(jwtAccessTokenConverter());
+    }
+
+    /**
+     * @return 扩展自定义的jwtToken
+     */
+    @Bean
+    public TokenEnhancer jwtTokenEnhancer(){
+        return new AuthTokenEnhancer();
     }
 }
