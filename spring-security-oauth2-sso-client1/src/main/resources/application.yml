@@ -1,0 +1,9 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /client
+
+
+#clientId
+client_id: client1
+client_secret: oauth1

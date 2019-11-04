@@ -7,6 +7,8 @@
         <module>spring-security-oauth2-authorization-mysql</module>
         <module>spring-security-oauth2-authorization-redis</module>
         <module>spring-security-oauth2-authorization-jwtToken</module>
+        <module>spring-security-oauth2-sso-server</module>
+        <module>spring-security-oauth2-sso-client1</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

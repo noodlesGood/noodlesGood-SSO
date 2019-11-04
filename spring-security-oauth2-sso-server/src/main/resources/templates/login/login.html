@@ -1,0 +1,42 @@
+﻿
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Smart Login Form Responsive Widget Template</title>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     
+    <!-- Meta tag Keywords -->
+    <!-- css files -->
+    <link th:href="@{css/style.css}" rel="stylesheet" type="text/css" media="all">
+    <body>
+        <!--header-->
+        <div class="agileheader">
+            <h1></h1>
+        </div>
+        <!--//header-->
+        <!--main-->
+        <div class="main-w3l">
+            <div class="w3layouts-main">
+                <h2>立即登录</h2>
+                <form th:action="@{/login}" th:method="post">
+                    <input  name="username" type="username"  />
+                    <input  name="password" type="password"  />
+                    <span><input type="checkbox" />记住我</span>
+                    <h6><a href="#">忘记密码?</a></h6>
+                    <div class="clear"></div>
+                    <input type="submit" value="登 录" name="login">
+                </form>
+                <p>还没有账号 ?<a href="#">立即注册</a></p>
+            </div>
+        </div>
+        <!--//main-->
+        <!--footer-->
+        <div class="footer-w3l">
+            <p>&copy; 2019 Smart Login Form. All rights reserved | Design by <a href="http://www.bootstrapmb.com/">bootstrapmb</a></p>
+        </div>
+        <!--//footer-->
+
+    </body>
+</html>

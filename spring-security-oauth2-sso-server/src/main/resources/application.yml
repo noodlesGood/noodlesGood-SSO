@@ -1,0 +1,18 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /sso
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/oauth2db?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&autoReconnect=true&serverTimezone=UTC
+    username: root
+    password: 123456
+  #thymelea模板配置
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    servlet:
+      content-type: text/html
+    encoding: utf-8
