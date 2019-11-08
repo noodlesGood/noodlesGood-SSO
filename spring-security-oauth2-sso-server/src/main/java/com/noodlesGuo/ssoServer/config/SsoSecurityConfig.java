@@ -22,14 +22,14 @@ public class SsoSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/login", "/oauth/authorize","/sso/oauth/token").permitAll()
+                .antMatchers("/login", "/oauth/authorize","/oauth/token").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
                     .loginPage("/login").loginProcessingUrl("/login")// 设置登录页地址，并设置处理登录请求的路径
                 .and()
-                    .httpBasic().disable()
+                    .httpBasic()
                ;
     }
 
