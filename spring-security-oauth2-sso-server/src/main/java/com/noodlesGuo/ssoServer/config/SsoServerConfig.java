@@ -3,6 +3,8 @@ package com.noodlesGuo.ssoServer.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -21,9 +23,12 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableAuthorizationServer
+@Order(0)
 public class SsoServerConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private AuthenticationManager authenticationManager;
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(clientDetails());
@@ -32,12 +37,15 @@ public class SsoServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.allowFormAuthenticationForClients();//配置这个解决无法使用post获取access token的问题
+        security.checkTokenAccess("permitAll()");
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(tokenStore())
         .accessTokenConverter(jwtAccessTokenConverter());
+        endpoints.authenticationManager(authenticationManager);
+
     }
 
     /**

@@ -3,6 +3,7 @@ package com.noodlesGuo.ssoServer.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -27,10 +28,11 @@ public class SsoSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin()
-                    .loginPage("/login").loginProcessingUrl("/login")// 设置登录页地址，并设置处理登录请求的路径
+                    .loginPage("/login").loginProcessingUrl("/Login")// 设置登录页地址，并设置处理登录请求的路径
                 .and()
                     .httpBasic()
                ;
+
     }
 
     @Override
@@ -46,10 +48,23 @@ public class SsoSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/js/**","/css/**", "/static/**", "/images/**", "/**/favicon.ico");
+
     }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * 认证管理
+     *
+     * @return 认证管理对象
+     * @throws Exception 认证异常信息
+     */
+    @Override
+    @Bean  // 重点是这行，父类并没有将它注册为一个 Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }

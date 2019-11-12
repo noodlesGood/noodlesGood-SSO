@@ -1,5 +1,7 @@
 server:
-  port: 8000
+  port: 8080
+  servlet:
+    context-path: /sso
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
