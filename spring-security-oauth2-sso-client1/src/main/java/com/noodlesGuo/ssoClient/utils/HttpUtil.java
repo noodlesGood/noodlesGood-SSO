@@ -90,9 +90,12 @@ public class HttpUtil {
         CloseableHttpClient httpclient = null;
         String resultStr = null;
         HttpGet httpGet = new HttpGet(url);
-        for (Map.Entry<String,String> entry:headerMap.entrySet()) {//设置头信息
-            httpGet.setHeader(entry.getKey(),entry.getValue());
+        if (headerMap!=null){
+            for (Map.Entry<String,String> entry:headerMap.entrySet()) {//设置头信息
+                httpGet.setHeader(entry.getKey(),entry.getValue());
+            }
         }
+
         CloseableHttpResponse response = null;
         try {
             httpclient = HttpClients.createDefault();

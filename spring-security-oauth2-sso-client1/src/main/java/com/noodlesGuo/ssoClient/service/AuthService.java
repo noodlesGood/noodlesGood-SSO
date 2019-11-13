@@ -7,4 +7,5 @@ import java.util.Map;
  */
 public interface AuthService {
     public Map<String,Object> getAccessToken(String code);
+    public Map<String,Object> getUserInfo(String accessToken);
 }
