@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
+/**
+ * 作为资源服务器的时候
+ * RestController是不可以跟url的
+ */
 @RestController
 @RequestMapping("/user")
 @Slf4j

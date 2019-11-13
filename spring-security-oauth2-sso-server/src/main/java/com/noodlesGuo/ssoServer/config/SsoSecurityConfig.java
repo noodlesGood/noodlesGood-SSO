@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
-@Order(1)
+//@Order(1)
 public class SsoSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -29,8 +29,8 @@ public class SsoSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                     .loginPage("/login").loginProcessingUrl("/Login")// 设置登录页地址，并设置处理登录请求的路径
-                .and()
-                    .httpBasic()
+//                .and()
+//                    .httpBasic()
                ;
 
     }
