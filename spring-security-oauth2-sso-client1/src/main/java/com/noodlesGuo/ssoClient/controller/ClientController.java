@@ -26,7 +26,10 @@ public class ClientController {
     public void getCode(HttpServletRequest request, HttpServletResponse response){
         String code = request.getParameter("code");
         log.info("resultCode:{}",code);
-        Map<String, Object> accessToken = authService.getAccessToken(code);
-        log.info("【请求的token：】{}",accessToken);
+        Map<String, Object> result = authService.getAccessToken(code);
+        log.info("【token请求的结果：】{}",result);
+        String accessToken = (String) result.get("access_token");
+        Map<String, Object> userInfo = authService.getUserInfo(accessToken);
+        log.info("【返回的user：】{}",userInfo);
     }
 }
