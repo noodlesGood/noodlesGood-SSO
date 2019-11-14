@@ -29,6 +29,13 @@ public class SsoSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                     .loginPage("/login").loginProcessingUrl("/Login")// 设置登录页地址，并设置处理登录请求的路径
+                .and()
+                    .logout()
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessUrl("/login")
+                        .permitAll()
 //                .and()
 //                    .httpBasic()
                ;
