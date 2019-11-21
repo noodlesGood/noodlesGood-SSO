@@ -20,12 +20,18 @@ public class LoginController {
     }
 
     /**
-     * 登出
+     * sso server 退出后的后续操作
      * @return
      */
-    @RequestMapping("/logout")
+    @RequestMapping("/asynLogout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(request, response, null);
-        return "login/login";
+
+        System.out.println("ceshi");
+        return "redirect:/login";
+    }
+
+    @RequestMapping("/")
+    public String index(){
+        return "index";
     }
 }

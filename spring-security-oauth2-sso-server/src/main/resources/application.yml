@@ -17,3 +17,7 @@ spring:
     servlet:
       content-type: text/html
     encoding: utf-8
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect

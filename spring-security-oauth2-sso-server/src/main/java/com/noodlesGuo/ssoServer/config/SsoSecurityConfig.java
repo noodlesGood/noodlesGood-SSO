@@ -34,10 +34,12 @@ public class SsoSecurityConfig extends WebSecurityConfigurerAdapter {
                         .logoutUrl("/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/asynLogout")
                         .permitAll()
 //                .and()
 //                    .httpBasic()
+                .and()
+                    .csrf().disable()
                ;
 
     }
