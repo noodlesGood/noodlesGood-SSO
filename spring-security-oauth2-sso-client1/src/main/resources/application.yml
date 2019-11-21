@@ -7,3 +7,13 @@ server:
 #clientId
 client_id: client1
 client_secret: oauth1
+
+#thymleaf配置
+spring:
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    servlet:
+      content-type: text/html
+    encoding: utf-8

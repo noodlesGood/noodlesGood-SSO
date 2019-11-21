@@ -14,6 +14,8 @@ public class SsoServerConstants {
 
     public static final String SSO_USER_URL = SSO_BASE_URL+"/user/me";
 
+    public static final String SSO_Login_URL = SSO_BASE_URL+"/login";
+
     /**SSO CLIENT*/
     public static final String REDIRECT_URL = "http://localhost:8081/client/auth/getCode";
     public static final String CLIENT_ID = "client1";
