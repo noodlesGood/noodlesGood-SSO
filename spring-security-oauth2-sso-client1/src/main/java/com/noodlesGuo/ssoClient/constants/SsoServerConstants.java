@@ -16,8 +16,10 @@ public class SsoServerConstants {
 
     public static final String SSO_Login_URL = SSO_BASE_URL+"/login";
 
+    public static final String SSO_SESSIONID = "ssoSessionId";
+
     /**SSO CLIENT*/
-    public static final String REDIRECT_URL = "http://localhost:8081/client/auth/getCode";
+    public static final String REDIRECT_URL = "http://localhost:8081/client/auth/login";
     public static final String CLIENT_ID = "client1";
     public static final String CLIENT_SECRET = "oauth1";
 

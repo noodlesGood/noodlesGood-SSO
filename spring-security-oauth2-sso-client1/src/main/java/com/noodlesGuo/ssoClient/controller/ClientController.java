@@ -1,5 +1,6 @@
 package com.noodlesGuo.ssoClient.controller;
 
+import com.noodlesGuo.ssoClient.constants.SsoServerConstants;
 import com.noodlesGuo.ssoClient.service.AuthService;
 import com.sun.deploy.net.HttpResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -9,10 +10,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,13 +34,19 @@ import java.util.Map;
 public class ClientController {
     @Autowired
     private AuthService authService;
-    @GetMapping("/getCode")
+    @Autowired
+    private SessionRegistry sessionRegistry;
+
+    @Autowired
+    private ServletContext context;
+    @GetMapping("/login")
     public String getCode(HttpServletRequest request, HttpServletResponse response){
         String code = request.getParameter("code");
         log.info("resultCode:{}",code);
-        Map<String, Object> result = authService.getAccessToken(code);
-        log.info("【token请求的结果：】{}",result);
-        String accessToken = (String) result.get("access_token");
+        Map<String, Object> accessTokenResult = authService.getAccessToken(code);
+        String ssoSessionId = (String) accessTokenResult.get("ssoSessionId");
+        log.info("【token请求的结果：】{}",accessTokenResult);
+        String accessToken = (String) accessTokenResult.get("access_token");
         Map<String, Object> userInfo = authService.getUserInfo(accessToken);
         log.info("【返回的user：】{}",userInfo);
         Map<String, Object> principalMap = parseUserPrincipal(userInfo);
@@ -46,25 +55,31 @@ public class ClientController {
             ArrayList<GrantedAuthority>  authorities = (ArrayList<GrantedAuthority>)principalMap.get("authorities");
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalMap.get("principal"), null,authorities);
             HttpSession session = request.getSession();
-            System.out.println("sessionId:"+session.getId());
+            log.info("【client_sessionId:】{}",session.getId());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            context.setAttribute(ssoSessionId,session.getId());
         }
-
-//        return  "forward:/auth/index";
         return  "redirect:/auth/index";
     }
 
     @GetMapping("/index")
     public String authenticate(){
-//        SecurityContextHolder.getContext().setAuthentication();
         return "index";
 
     }
 
-    @GetMapping("/index2")
-    public String authenticate2(){
-//        SecurityContextHolder.getContext().setAuthentication();
-        return "index";
+    /**
+     * 客户端注销回调接口,由sso server端调用
+     * @return String
+     */
+    @GetMapping("/Logout")
+    public void logout(HttpServletRequest request,HttpServletResponse response){
+        String ssoSessionId = request.getParameter(SsoServerConstants.SSO_SESSIONID);
+        String sessionId = (String) context.getAttribute(ssoSessionId);
+        if (sessionId!=null){
+            sessionRegistry.getSessionInformation(sessionId).expireNow();
+            context.removeAttribute(ssoSessionId);
+        }
     }
 
     /**
