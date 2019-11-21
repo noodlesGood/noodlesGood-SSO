@@ -1,5 +1,6 @@
 package com.noodlesGuo.ssoServer.config;
 
+import com.noodlesGuo.ssoServer.service.SsoInMemoryAuthorizationCodeServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,11 +13,14 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 /**
  * 授权服务配置
@@ -29,6 +33,8 @@ public class SsoServerConfig extends AuthorizationServerConfigurerAdapter {
     private DataSource dataSource;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private SsoInMemoryAuthorizationCodeServices authorizationCodeServices;
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(clientDetails());
@@ -42,9 +48,13 @@ public class SsoServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(jwtAccessTokenConverter(),tokenEnhancer()));
         endpoints.tokenStore(tokenStore())
-        .accessTokenConverter(jwtAccessTokenConverter());
-        endpoints.authenticationManager(authenticationManager);
+//        .accessTokenConverter(jwtAccessTokenConverter());
+            .tokenEnhancer(tokenEnhancerChain);
+        endpoints.authenticationManager(authenticationManager)
+                  .authorizationCodeServices(authorizationCodeServices);
 
     }
 
@@ -75,5 +85,14 @@ public class SsoServerConfig extends AuthorizationServerConfigurerAdapter {
     @Bean
     public TokenStore tokenStore(){
         return new JwtTokenStore(jwtAccessTokenConverter());
+    }
+
+    /**
+     * 自定义扩展令牌
+     * @return TokenEnhancer
+     */
+    @Bean
+    public TokenEnhancer tokenEnhancer(){
+        return  new SsoTokenEnhancer();
     }
 }

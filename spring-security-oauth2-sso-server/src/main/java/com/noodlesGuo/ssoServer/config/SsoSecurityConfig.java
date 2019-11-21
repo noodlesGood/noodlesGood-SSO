@@ -49,7 +49,7 @@ public class SsoSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder())
                 .withUser("user")
                 .password(passwordEncoder().encode("123456"))
-                .roles("USER");
+                .roles("USER","ADMIN");
     }
 
     @Override
