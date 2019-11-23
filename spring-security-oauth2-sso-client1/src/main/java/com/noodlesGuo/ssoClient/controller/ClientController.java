@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,6 +59,7 @@ public class ClientController {
             log.info("【client_sessionId:】{}",session.getId());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             context.setAttribute(ssoSessionId,session.getId());
+            sessionRegistry.registerNewSession(session.getId(),session);
         }
         return  "redirect:/auth/index";
     }
@@ -76,8 +78,13 @@ public class ClientController {
     public void logout(HttpServletRequest request,HttpServletResponse response){
         String ssoSessionId = request.getParameter(SsoServerConstants.SSO_SESSIONID);
         String sessionId = (String) context.getAttribute(ssoSessionId);
+        System.out.println("id:"+sessionId);
         if (sessionId!=null){
-            sessionRegistry.getSessionInformation(sessionId).expireNow();
+            SessionInformation sessionInformation = sessionRegistry.getSessionInformation(sessionId);
+            System.out.println("sessionInformation:"+sessionInformation);
+            if (sessionInformation!=null){
+                sessionInformation.expireNow();
+            }
             context.removeAttribute(ssoSessionId);
         }
     }
