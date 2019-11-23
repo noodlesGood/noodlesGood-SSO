@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage(SsoServerConstants.SSO_AUTHORIZE_URL)
             .and()
-                .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry)
+                .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry).expiredUrl(SsoServerConstants.SSO_Login_URL)
             .and()
 //            .and()
 //                .logout()
