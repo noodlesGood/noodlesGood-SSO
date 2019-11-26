@@ -22,7 +22,8 @@
 
 ## SSO 单点登录系统
 #### 项目介绍
-java 版SSO单点系统、基于spring oauth2.0协议研发的单点登录系统,可兼容多语言客户端接入,客户端遵循本系统的接入规范可实现单点登录和单点登出
+java 版SSO单点系统、基于spring oauth2.0协议研发的单点登录系统,可兼容多语言客户端接入,客户端遵循本系统的接入规范可实现单点登录和单点登出,
+本系统解决了实现了不同域名下的子系统的单点登录功能的实现。
 代码完全开源。
  
 技术选型：jfinal mybatis mysql  freemarker  redis spring 等 layui zTree bootstrap 。
