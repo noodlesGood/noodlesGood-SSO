@@ -30,17 +30,6 @@ SSO单点登录系统是基于Spring-Boot、oauth2.0协议、springSecurity、My
      +--------+                               +-----------------+
 
 
-### 技术交流
-
-为了方便大家提问和技术交流，整了个QQ群，欢迎童鞋们加入。
-
-QQ技术交流群： 429854222
-
-笔者技术博客：[https://www.cnblogs.com/xifengxiaoma/](https://www.cnblogs.com/xifengxiaoma/)
-
-### 功能列表
-
-
 #### 后端架构
 
 ##### 开发环境
@@ -87,30 +76,33 @@ authorization-mysql： 认证授权服务器的token使用mysql存储，示范�
 
 ### 安装教程
 
-
-#### 后端安装
-
 ##### 获取源码
 获取后端源码，获取上面所列所有项目结构，将其拷贝放置到本地目录。
 
 ##### 导入工程
-使用 IDEA导入 Maven 项目，在此之前请确认已安装 JDK 和 Maven 工具。
-
-##### 编译源码
-找到 mango-pom 工程下的 pom.xml，执行 maven clean install 命令进行一键打包。
-一般来说不会有什么问题，如果还打包失败，可以按照优先级逐个编译试一试。
+使用 IDEA导入 Maven 项目或者fork项目导入到IDEA，在此之前请确认已安装 JDK 和 Maven 工具。
 
 ##### 导入数据库
-新建mango数据库，使用项目sql目录下的mango.sql 脚本，导入初始化数据库。
-修改 mango-admin 下 application.yml 中的数据源配置信息为自己的数据库配置。
-修改 mango-backup下 application.yml 中的数据源配置信息为自己的数据库配置。
+新建sso数据库，使用项目https://github.com/noodlesGood/Authorization-server/blob/master/spring-security-oauth2-authorization-mysql/src/main/resources/oauth2db.sql数据库文件初始化数据库。
+修改 sso-server 下 application.yml 中的数据源配置信息为自己的数据库配置。
 
-##### 启动系统
+#### 启动系统
 
-###### 基础必需模块（注册中心：mango-consul，服务监控：mango-monitor）
+###### sso server模块 与 ssso client模块（sso服务端：sso-server，sso客户端：sso-client）
 
-找到 mango-consul 工程，根据安装说明安装注册中心，执行 consul agent -dev 启动。
-找到 mango-monitor 工程下的MangoMonitorApplication， 启动项目，开启服务监控。
+找到 sso-server 工程下的SsoServerApplication类中右键运行，启动sso 单点登录系统,此时单点登录系统即可运行:http://127.0.0.1:8080/。
+
+找到 sso-client1 工程下的SsoClientApplication类中右键运行，启动接入ssoServer的演示客户端，127.0.0.1:8081/。
+
+##### 单点登录登出效果演示
+
+1.此时当访问客户端任意地址http://127.0.0.1:8081/时，子应用因为没有登录，会重定向到sso-server的登录页面：http://127.0.0.1:8080/sso/login
+
+2.用户输入user/123456,登录成功后自动跳转回刚刚的客户端地址，完成单点登录。
+
+3.当在同一浏览器的sso登录系统或已经接入sso的其他子系统点击退出按钮时，所有此浏览器的应用将共同注销退出。
+
+例如:sso-server主页：http://localhost:8081/client/auth/index 点击退出,刷新客户端即显示当前已经是退出状态。
 
 ###### 权限管理模块（权限管理：mango-admin，备份还原：mango-backup）
 找到 mango-admin 工程下的MangoAdminApplication， 启动项目，开启权限系统服务。
