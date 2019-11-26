@@ -59,7 +59,7 @@ authorization-mysql： 认证授权服务器的token使用mysql存储，示范�
 使用 IDEA导入 Maven 项目或者fork项目导入到IDEA，在此之前请确认已安装 JDK 和 Maven 工具。
 
 ##### 导入数据库
-新建sso数据库，使用项目spring-security-oauth2-authorization-mysql/src/main/resources/oauth2db.sql数据库文件初始化数据库。
+新建sso数据库，使用项目spring-security-oauth2-sso-server/src/main/resources/sql/oauth2db.sql数据库文件初始化数据库。
 
 修改 sso-server 下 application.yml 中的数据源配置信息为自己的数据库配置。
 
