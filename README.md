@@ -83,7 +83,8 @@ authorization-mysql： 认证授权服务器的token使用mysql存储，示范�
 使用 IDEA导入 Maven 项目或者fork项目导入到IDEA，在此之前请确认已安装 JDK 和 Maven 工具。
 
 ##### 导入数据库
-新建sso数据库，使用项目https://github.com/noodlesGood/Authorization-server/blob/master/spring-security-oauth2-authorization-mysql/src/main/resources/oauth2db.sql数据库文件初始化数据库。
+新建sso数据库，使用项目spring-security-oauth2-authorization-mysql/src/main/resources/oauth2db.sql数据库文件初始化数据库。
+
 修改 sso-server 下 application.yml 中的数据源配置信息为自己的数据库配置。
 
 #### 启动系统
@@ -104,24 +105,16 @@ authorization-mysql： 认证授权服务器的token使用mysql存储，示范�
 
 例如:sso-server主页：http://localhost:8081/client/auth/index 点击退出,刷新客户端即显示当前已经是退出状态。
 
-###### 权限管理模块（权限管理：mango-admin，备份还原：mango-backup）
-找到 mango-admin 工程下的MangoAdminApplication， 启动项目，开启权限系统服务。
-找到 mango-backup 工程下的MangoBackupApplication.java，启动项目，开启备份服务。
+#### sso服务接入文档
+  ###### sso系统基于oauth2.0授权码模式,类似于微信第三方授权,不熟悉的小伙伴，可以先去了解下，有利于大家理解接入文档
+  1.首先当用户访问子应用时，子应用判断当前session的状态是否已登录,若不存在session或session状态不正确,则重定向到sso-server单点登录系统的
+  
+  授权地址:SSO_SERVER_URL+"/oauth/authorize?response_type=code&client_id="+CLIENT_ID+
+            "&redirect_uri="+CLIENT_REDIRECT_URL+"&scope=all
 
 ###### 其他示例模块（Spring Cloud示例模块，作为开发模板和范例，根据需要启动）
 以下为Spring Cloud体系各种功能的实现范例，可以根据需要启动，后续扩展开发也可以作为参考和模板使用，具体使用教程请参考本书后面Spring Cloud系列教程的章节，关于Spring Cloud体系的各种功能模块都有详细的讲解和完整的案例实现。
 
-这些示例模块包括：
-
-mango-producer： 服务提供者示例，演示服务提供者的实现
-
-mango-consumer： 服务消费者示例，演示服务消费者的实现
-
-mango-hystrix： 服务熔断监控模块，演示熔断监控功能的实现
-
-mango-zuul： API服务网关模块，演示API统一网关的实现
-
-mango-config： 配置中心服务端，演示分布式配置中心的实现
 
 ##### 注意事项：
 注册中心是基础服务，需要先安装Consul，找到mango-consul工程，根据安装说明安装Consul。
