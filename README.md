@@ -157,15 +157,55 @@ authorization-mysql： 认证授权服务器的token使用mysql存储，示范�
 ---请求地址:SSO_BASE_URL+"/user/me
 
 ---返回结果json:
-         ```
-             {
-                    "access_token":"eyJhbGciOiJIU58M",
-                    "refresh_token":"eyJhbGciO",
-                    "scope":"all",
-                    "token_type":"bearer",
-                    "ssoSessionId":"F01EEE15D7AAA58EA1BBB268EB52EE29",
-                    "expires_in":2591999
-             }
+         ```{
+  "principal": "user",
+  "authenticated": true,
+  "clientOnly": false,
+  "credentials": "",
+  "userAuthentication": {
+    "principal": "user",
+    "authenticated": true,
+    "credentials": "N/A",
+    "name": "user",
+    "authorities": [
+      {
+        "authority": "ROLE_ADMIN"
+      },
+      {
+        "authority": "ROLE_USER"
+      }
+    ]
+  },
+  "name": "user",
+  "details": {
+    "tokenType": "Bearer",
+    "tokenValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzczNDM1NzMsInV",
+    "remoteAddress": "127.0.0.1"
+  },
+  "authorities": [
+    {
+      "authority": "ROLE_ADMIN"
+    },
+    {
+      "authority": "ROLE_USER"
+    }
+  ],
+  "oauth2Request": {
+    "responseTypes": [],
+    "approved": true,
+    "extensions": {},
+    "clientId": "client1",
+    "scope": [
+      "all"
+    ],
+    "requestParameters": {
+      "client_id": "client1"
+    },
+    "refresh": false,
+    "authorities": [],
+    "resourceIds": []
+  }
+}
          ```
 
 
