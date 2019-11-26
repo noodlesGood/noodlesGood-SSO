@@ -98,20 +98,49 @@ authorization-mysql： 认证授权服务器的token使用mysql存储，示范�
 
 ##### 单点登录登出效果演示
 
-1.此时当访问客户端任意地址http://127.0.0.1:8081/时，子应用因为没有登录，会重定向到sso-server的登录页面：http://127.0.0.1:8080/sso/login
+***1.此时当访问客户端任意地址http://127.0.0.1:8081/时，子应用因为没有登录，会重定向到sso-server的登录页面：http://127.0.0.1:8080/sso/login***
 
-2.用户输入user/123456,登录成功后自动跳转回刚刚的客户端地址，完成单点登录。
+***2.用户输入user/123456,登录成功后自动跳转回刚刚的客户端地址，完成单点登录。***
 
-3.当在同一浏览器的sso登录系统或已经接入sso的其他子系统点击退出按钮时，所有此浏览器的应用将共同注销退出。
+***3.当在同一浏览器的sso登录系统或已经接入sso的其他子系统点击退出按钮时，所有此浏览器的应用将共同注销退出。***
 
-例如:sso-server主页：http://localhost:8081/client/auth/index 点击退出,刷新客户端即显示当前已经是退出状态。
+***例如:sso-server主页：http://localhost:8081/client/auth/index 点击退出,刷新客户端即显示当前已经是退出状态。***
 
 #### sso服务接入文档
   ###### sso系统基于oauth2.0授权码模式,类似于微信第三方授权,不熟悉的小伙伴，可以先去了解下，有利于大家理解接入文档
   1.首先当用户访问子应用时，子应用判断当前session的状态是否已登录,若不存在session或session状态不正确,则重定向到sso-server单点登录系统的
   
-  授权地址:SSO_SERVER_URL+"/oauth/authorize?response_type=code&client_id="+CLIENT_ID+
+  -----请求方法:GET
+  
+ ---- 授权地址:SSO_SERVER_URL+"/oauth/authorize?response_type=code&client_id="+CLIENT_ID+
             "&redirect_uri="+CLIENT_REDIRECT_URL+"&scope=all
+          
+  ###### SSO_SERVER_URL:sso服务端地址 || CLIENT_ID:sso服务端分配给子应用的client_id,参考表oauth_client_details client_id字段
+  
+  ###### CLIENT_REDIRECT_URL:客户端子应用的回调地址,用于接收授权码,参考表oauth_client_details: web_server_redirect_uri字段
+  
+  2.重定向到sso服务端的授权地址后，若当前已登录则sso服务端会直接回调子应用的注册的回调地址并返回授权code。
+  
+  ----例如CLIENT_REDIRECT_URL?code=xxxx。若用户未登录，则正常登录后在跳转回调地址并返回授权code。
+  
+  3.子应用的例如CLIENT_REDIRECT_URL回调地址获取授权码后根据授权code获取access_token
+  
+  ---请求方法:POST
+  
+  ---获取token的请求地址:SSO_BASE_URL+"/oauth/token?grant_type=authorization_code" +
+            "&code=xxx&client_id=xxx&client_secret=xxx&redirect_uri=xxx"
+            
+  ---返回结果json：
+         ```json
+                                            {"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzczNDMyNzYsInVzZXJfbmFtZSI6InVzZXIiLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImp0aSI6IjY2YmE1NDEyLWU1M2MtNDg1Yy1hYjdiLWE2MGE1NjBhNzZmNiIsImNsaWVudF9pZCI6ImNsaWVudDEiLCJzY29wZSI6WyJhbGwiXX0.DjtThGoNoPZLXWR4jKxSfxKiM83O39qLn7RjepBG58M","refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJ1c2VyIiwic2NvcGUiOlsiYWxsIl0sImF0aSI6IjY2YmE1NDEyLWU1M2MtNDg1Yy1hYjdiLWE2MGE1NjBhNzZmNiIsImV4cCI6MTU3NzM0MzI3NiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJlNzE5Y2Q2OC1iZDljLTRhMWYtYjdhYS1iMGU5MjdmYjdmMDMiLCJjbGllbnRfaWQiOiJjbGllbnQxIn0.ffLuIoNrCQQQ58JhVjzV4ruweKUvmNAgcyNwqZhY61c","scope":"all","token_type":"bearer","ssoSessionId":"F01EEE15D7AAA58EA1BBB268EB52EE29","expires_in":2591999}
+         ```
+         
+****注意保存token中的ssoSessionId的值，这是全局session的唯一标识，共通退出时会用到****
+                
+            
+   ###### code:上一步取的授权code || client_id:sso服务端分配给子应用的client_id,参考表oauth_client_details client_id字段
+   
+   ###### client_secret:sso服务端分配给子应用的client_secret || redirect_uri:客户端注册的回调地址，必须与上一步的回调地址保持一致
 
 ###### 其他示例模块（Spring Cloud示例模块，作为开发模板和范例，根据需要启动）
 以下为Spring Cloud体系各种功能的实现范例，可以根据需要启动，后续扩展开发也可以作为参考和模板使用，具体使用教程请参考本书后面Spring Cloud系列教程的章节，关于Spring Cloud体系的各种功能模块都有详细的讲解和完整的案例实现。
