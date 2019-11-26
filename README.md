@@ -35,7 +35,8 @@ SSO单点登录系统是基于Spring-Boot、oauth2.0协议、springSecurity、My
 
 #### 单点登录原理及oauth2.0协议认证授权原理
 
-![输入图片说明](https://images.gitee.com/uploads/images/2019/0605/105405_69303b58_645970.png "sbscve.png")
+![输入图片说明](https://github.com/noodlesGood/Authorization-server/blob/master/images/sso%E7%99%BB%E5%BD%95.png "单点登录")
+![](https://github.com/noodlesGood/Authorization-server/blob/master/images/sso%E5%8D%95%E7%82%B9%E6%B3%A8%E9%94%80.png "单点注销")
 
 #### 书籍链接
 
