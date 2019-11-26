@@ -33,7 +33,7 @@ java 版SSO单点系统、基于spring oauth2.0协议研发的单点登录系统
 SSO单点登录系统是基于Spring-Boot、oauth2.0协议、springSecurity、Mybatis、mysql、redis、jwtToken、Bootstrap、thymleaf等主流前后端技术的单点登录以及用户权限管理系统。基于spring oauth2.0协议研发的单点登录系统,可兼容多语言客户端接入,客户端遵循本系统的接入规范可实现单点登录和单点登出,
 本系统实现了可在不同域名下的子系统的单点登录/登出功能的实现。后端开发人员都可以参考优化此项目,也可以基于此系统开发和实现具体生产项目。代码完全开源。
 
-#### 书籍封面
+#### 单点登录原理及oauth2.0协议认证授权原理
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2019/0605/105405_69303b58_645970.png "sbscve.png")
 
@@ -71,7 +71,7 @@ QQ技术交流群： 429854222
 
 ##### 开发环境
 
-IDE : Intellij IDEA 4.x
+IDE : Intellij IDEA 2019.2.3
 
 JDK : JDK1.8.x
 
@@ -91,7 +91,7 @@ MySQL: MySQL 5.7.x
 
 视图框架：Spring MVC 5.x
 
-持久层框架：MyBatis 3.x
+持久层框架：MyBatis 3.x 、JPA
 
 缓存数据库：redis
 
