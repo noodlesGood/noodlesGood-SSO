@@ -29,24 +29,6 @@ SSO单点登录系统是基于Spring-Boot、oauth2.0协议、springSecurity、My
      |        |<-（F）---- 获取受保护的资源 -----|                 |
      +--------+                               +-----------------+
 
-#### 书籍链接
-
-##### 京东 参考链接：
-
-[https://item.jd.com/49029589963.html](https://item.jd.com/49029589963.html)
-
-[https://item.jd.com/48751078393.html](https://item.jd.com/48751078393.html)
-
-##### 当当 参考链接：
-
-[http://product.dangdang.com/1438252364.html](http://product.dangdang.com/1438252364.html)
-
-##### 天猫 参考链接：
-
-[https://detail.tmall.com/item.htm?spm=a220m.1000858.1000725.16.a4721049QUevoi&id=595707200013](https://detail.tmall.com/item.htm?spm=a220m.1000858.1000725.16.a4721049QUevoi&id=595707200013)
-
-[https://detail.tmall.com/item.htm?spm=a220m.1000858.1000725.6.a4721049QUevoi&id=596116466076](https://detail.tmall.com/item.htm?spm=a220m.1000858.1000725.6.a4721049QUevoi&id=596116466076)
-
 
 ### 技术交流
 
@@ -79,11 +61,11 @@ MySQL: MySQL 5.7.x
 
 授权协议：oauth2.0
 
-安全框架：Spring Security 5.x
+安全框架：Spring Security 
 
-视图框架：Spring MVC 5.x
+视图框架：Spring MVC 
 
-持久层框架：MyBatis 3.x 、JPA
+持久层框架：MyBatis 、JPA
 
 缓存数据库：redis
 
@@ -93,33 +75,15 @@ MySQL: MySQL 5.7.x
 
 ##### 项目结构
 
-mango-common： 公共代码模块，主要放置一些工具类
+sso-server： sso服务端
 
-mango-core： 封装业务模块，主要封装公共业务模块
+sso-client1： 接入sso服务的示范客户端
 
-mango-admin： 后台管理模块，包含用户、角色、菜单管理等
+authorization-jwtToken： 认证授权服务器的token使用jwtToken，示范用例，不影响sso Server
 
-mango-backup： 系统数据备份还原模块，可选择独立部署
+authorization-redis： 认证授权服务器的token使用redis存储，示范用例，不影响sso Server
 
-mango-monitor： 系统监控服务端，监控Spring Boot应用
-
-mango-producer： 服务提供者示例，方便在此基础上搭建模块
-
-mango-consumer： 服务消费者示例，方便在此基础上搭建模块
-
-mango-hystrix： 服务熔断监控模块，收集汇总熔断统计信息
-
-mango-zuul： API服务网关模块，统一管理和转发外部调用请求
-
-mango-config： 配置中心服务端，生成GIT配置文件的访问接口
-
-mango-consul： 注册中心，安装说明目录，内附安装引导说明
-
-mango-zipkin： 链路追踪，安装说明目录，内附安装引导说明
-
-config-repo： 配置中心仓库，在GIT上统一存储系统配置文件
-
-mango-pom： 聚合模块，仅为简化打包，一键执行打包所有模块
+authorization-mysql： 认证授权服务器的token使用mysql存储，示范用例，不影响sso Server
 
 ### 安装教程
 
