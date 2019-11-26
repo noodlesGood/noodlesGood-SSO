@@ -4,13 +4,14 @@
 
 SSO单点登录系统是基于Spring-Boot、oauth2.0协议、springSecurity、Mybatis、mysql、redis、jwtToken、Bootstrap、thymleaf等主流前后端技术的单点登录以及用户权限管理系统。基于spring oauth2.0协议研发的单点登录系统,可兼容多语言客户端接入,客户端遵循本系统的接入规范可实现单点登录和单点登出,
 本系统支持跨域,可在不同域名下的子系统的单点登录/登出功能的实现。后端开发人员都可以参考优化此项目,也可以基于此系统开发和实现具体生产项目。代码完全开源。
+###### 下面会有演示说明,和sso服务接入文档请感兴趣的朋友参考。
 
 #### 单点登录原理及oauth2.0协议认证授权原理
 ##### 单点登录原理图
 ![输入图片说明](https://github.com/noodlesGood/Authorization-server/blob/master/images/sso%E7%99%BB%E5%BD%95.png "单点登录")
 ##### 单点注销原理图
 ![](https://github.com/noodlesGood/Authorization-server/blob/master/images/sso%E5%8D%95%E7%82%B9%E6%B3%A8%E9%94%80.png "单点注销")
-##### oauth2.0认证授权原理图 本sso系统基于此实现
+##### oauth2.0认证授权原理图 本sso系统基于oauth2.0授权码实现
          +--------+                               +-----------------+
      |        |--（A）------- 授权请求 -------->|                 |
      |        |                               | 资源所有者（用户） |
