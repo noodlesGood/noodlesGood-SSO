@@ -7,10 +7,7 @@ SSO单点登录系统是基于Spring-Boot、oauth2.0协议、springSecurity、My
 ###### 下面会有演示说明,和sso服务接入文档请感兴趣的朋友参考。
 
 #### 单点登录原理及oauth2.0协议认证授权原理
-##### 单点登录原理图
-![输入图片说明](https://github.com/noodlesGood/Authorization-server/blob/master/images/sso%E7%99%BB%E5%BD%95.png "单点登录")
-##### 单点注销原理图
-![](https://github.com/noodlesGood/Authorization-server/blob/master/images/sso%E5%8D%95%E7%82%B9%E6%B3%A8%E9%94%80.png "单点注销")
+
 ##### oauth2.0认证授权原理图 本sso系统基于oauth2.0授权码实现
          +--------+                               +-----------------+
      |        |--（A）------- 授权请求 -------->|                 |
@@ -97,6 +94,9 @@ authorization-mysql： 认证授权服务器的token使用mysql存储，示范�
 找到 sso-client1 工程下的SsoClientApplication类中右键运行，启动接入ssoServer的演示客户端，127.0.0.1:8081/。
 
 ## 单点登录登出效果演示
+
+##### 单点登录原理图
+![输入图片说明](https://github.com/noodlesGood/Authorization-server/blob/master/images/sso%E7%99%BB%E5%BD%95.png "单点登录")
 
 ***1.此时当访问客户端任意地址http://127.0.0.1:8081/时，子应用因为没有登录，会重定向到sso-server的登录页面：http://127.0.0.1:8080/sso/login***
 
@@ -207,6 +207,35 @@ authorization-mysql： 认证授权服务器的token使用mysql存储，示范�
   }
 }
          ```
+         
+##### -----解析json,获取userAuthentication对象下的authenticated:true/flase来判断是否用户成功认证登录,属性name:用户名
+##### -----属性authorities返回的是一个list 包含用户的权限列表，客户端自定义使用
+##### -----authenticated为true时:即在sso登录成功,此时客户端可将客户端session设置为登录状态,并用之前保存的ssoSessionId作为唯一标识管理客户端session
+
+***** 至此单点登录部分完成!*****
+
+### sso服务单点注销接口文档
+
+##### 单点注销原理图
+![](https://github.com/noodlesGood/Authorization-server/blob/master/images/sso%E5%8D%95%E7%82%B9%E6%B3%A8%E9%94%80.png "单点注销")
+
+**1.当某个客户端子应用点击注销按钮时,需要重定向到sso-server的注销地址**
+
+
+**2.sso服务端在接收到某个客户端发送的注销请求后,在注销全局session后,异步回调所有已注册的子应用的提供的注销回调接口**
+---- 请求方法:GET
+
+---- sso-server异步调用所有注册客户端的注销接口并携带sso全局sessionId：ssoSessionId
+
+---- 请求地址:CLIENT_LOGOUT_URI?ssoSessionId=xxxxx
+
+
+**3.客户端子应用需要向sso服务端注册注销回调地址供sso-server在接收到其他登录的客户端发出的注销请求后,回调此应用的注销接口**
+----参考参考表oauth_client_details的web_client_logout_uri字段
+
+**4.客户端子应用自己实现此回调注销接口**
+---- 请求方法:GET
+---- 获取url中的参数ssoSessionId。应该与之前单点登录成功时管理客户端session的唯一识别ssoSessionId一致。根据获取的ssoSessionId若能获取到客户端session,注销此session即可完成局部session的销毁，从而完成单点注销。
 
 
 ##### 注意事项：
